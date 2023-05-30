@@ -191,9 +191,9 @@ parameter={}
 parameter["min_tx_size"] = 0.150
 parameter["beta"] = 3
 
-parameter["6T_inv_nmos_size"] = 0.205
-parameter["6T_inv_pmos_size"] = 0.09
-parameter["6T_access_size"] = 0.135
+parameter["6T_inv_nmos_size"] = 0.360 # Changed from 0.205
+parameter["6T_inv_pmos_size"] = 0.360 # Changed from 0.09
+parameter["6T_access_size"] = 0.360 # Changed from 0.135
 
 drc = d.design_rules("sky130")
 
@@ -236,7 +236,7 @@ drc.add_layer("poly",
 # poly.8
 drc["poly_extend_active"] = 0.13
 # Not a rule
-drc["poly_to_contact"] = 0
+drc["poly_to_contact"] = 0.210 # Changed from 0
 # poly.7 Minimum enclosure of active around gate
 drc["active_enclose_gate"] = 0.075
 # poly.4 Minimum spacing of field poly to active
@@ -507,9 +507,10 @@ else:
     lvs_name = "netgen"
     pex_name = "magic"
 
+blackbox_bitcell = False
 
 # This is used by uniqify to not rename the library cells
-library_prefix_name = "sky130_fd_bd_sram__"
+#  library_prefix_name = "sky130_fd_bd_sram__"
 # List of cells to skip running DRC/LVS on directly
 # This will look for a maglef file and copy it over the mag file
 # before DRC after extraction
