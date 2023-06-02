@@ -23,6 +23,9 @@ tech_modules = d.module_type()
 ###################################################
 cell_properties = d.cell_properties()
 
+#  cell_properties.ptx.bin_spice_models = True
+cell_properties.ptx.model_is_subckt = True
+
 ###################################################
 # Custom layer properties
 ###################################################
