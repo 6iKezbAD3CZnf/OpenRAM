@@ -377,11 +377,11 @@ class pbitcell(bitcell_base):
                        self.inverter_pmos_right.get_pin("G").bc()])
 
         # connect output (drain/source) of inverters
-        self.add_path("m1",
+        self.add_path(self.inverter_nmos.route_layer,
                       [self.inverter_nmos_left.get_pin("D").uc(),
                        self.inverter_pmos_left.get_pin("D").bc()],
                       width=self.inverter_nmos_left.get_pin("D").width())
-        self.add_path("m1",
+        self.add_path(self.inverter_nmos.route_layer,
                       [self.inverter_nmos_right.get_pin("S").uc(),
                        self.inverter_pmos_right.get_pin("S").bc()],
                       width=self.inverter_nmos_right.get_pin("S").width())
@@ -839,6 +839,8 @@ class pbitcell(bitcell_base):
             if (k == 0) or (k == 1):
                 self.add_via_center(layers=self.poly_stack,
                                     offset=port_contact_offset)
+                self.add_via_center(layers=self.li_stack,
+                                    offset=port_contact_offset)
 
 
                 self.add_path("poly", [gate_offset, port_contact_offset])
@@ -848,7 +850,7 @@ class pbitcell(bitcell_base):
             else:
                 self.add_via_center(layers=self.poly_stack,
                                     offset=port_contact_offset)
-                self.add_via_center(layers=self.m1_stack,
+                self.add_via_center(layers=self.li_stack,
                                     offset=port_contact_offset)
 
                 self.add_via_center(layers=self.m1_stack,
@@ -890,6 +892,9 @@ class pbitcell(bitcell_base):
 
             # Leave bitline disconnected if a dummy cell
             if not self.dummy_bitcell:
+                self.add_via_center(layers=self.li_stack,
+                                    offset=port_contact_offest,
+                                    directions="nonpref")
                 self.add_via_center(layers=self.m1_stack,
                                     offset=port_contact_offest,
                                     directions="nonpref")
@@ -903,6 +908,9 @@ class pbitcell(bitcell_base):
 
             # Leave bitline disconnected if a dummy cell
             if not self.dummy_bitcell:
+                self.add_via_center(layers=self.li_stack,
+                                    offset=port_contact_offest,
+                                    directions="nonpref")
                 self.add_via_center(layers=self.m1_stack,
                                     offset=port_contact_offest,
                                     directions="nonpref")
@@ -921,6 +929,9 @@ class pbitcell(bitcell_base):
             nmos_contact_positions.append(self.read_access_nmos_right[k].get_pin("S").center())
 
         for position in nmos_contact_positions:
+            self.add_via_center(layers=self.li_stack,
+                                offset=position,
+                                directions=("V", "V"))
             self.add_via_center(layers=self.m1_stack,
                                 offset=position,
                                 directions=("V", "V"))
@@ -932,6 +943,9 @@ class pbitcell(bitcell_base):
                 contact_correct = -0.5 * self.m1_via.height
             supply_offset = vector(position.x + contact_correct,
                                    self.gnd_position.y)
+            self.add_via_center(layers=self.li_stack,
+                                offset=supply_offset,
+                                directions=("H", "H"))
             self.add_via_center(layers=self.m1_stack,
                                 offset=supply_offset,
                                 directions=("H", "H"))
@@ -939,6 +953,14 @@ class pbitcell(bitcell_base):
             self.add_path("m2", [position, supply_offset])
 
         # route inverter pmos to vdd
+        pmos_contact_positions = []
+        pmos_contact_positions.append(self.inverter_pmos_left.get_pin("S").uc())
+        pmos_contact_positions.append(self.inverter_pmos_right.get_pin("D").uc())
+        for position in pmos_contact_positions:
+            self.add_via_center(layers=self.li_stack,
+                                offset=position,
+                                directions=("V", "V"))
+
         vdd_pos_left = vector(self.inverter_nmos_left.get_pin("S").uc().x,
                               self.vdd_position.y)
         self.add_path("m1",
@@ -959,14 +981,14 @@ class pbitcell(bitcell_base):
                          self.cross_couple_lower_ypos)
             Q_pos = vector(self.inverter_nmos_left.get_pin("D").lx(),
                            self.cross_couple_lower_ypos)
-            self.add_path("m1",
+            self.add_path(self.inverter_nmos.route_layer,
                           [self.readwrite_nmos_left[k].get_pin("D").uc(), mid, Q_pos])
 
             mid = vector(self.readwrite_nmos_right[k].get_pin("S").uc().x,
                          self.cross_couple_lower_ypos)
             Q_bar_pos = vector(self.inverter_nmos_right.get_pin("S").rx(),
                                self.cross_couple_lower_ypos)
-            self.add_path("m1",
+            self.add_path(self.inverter_nmos.route_layer,
                           [self.readwrite_nmos_right[k].get_pin("S").uc(), mid, Q_bar_pos])
 
     def route_write_access(self):
@@ -1099,6 +1121,9 @@ class pbitcell(bitcell_base):
                             directions=("H", "H"),
                             implant_type="p",
                             well_type="p")
+        self.add_via_center(layers=self.li_stack,
+                            offset=offset,
+                            directions=("H", "H"))
 
         # connect nimplants to vdd
         offset = vector(0, self.vdd_position.y)
@@ -1107,6 +1132,9 @@ class pbitcell(bitcell_base):
                             directions=("H", "H"),
                             implant_type="n",
                             well_type="n")
+        self.add_via_center(layers=self.li_stack,
+                            offset=offset,
+                            directions=("H", "H"))
 
     def get_bitcell_pins(self, col, row):
         """
