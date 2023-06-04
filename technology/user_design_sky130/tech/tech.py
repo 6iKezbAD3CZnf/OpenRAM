@@ -26,6 +26,18 @@ cell_properties = d.cell_properties()
 #  cell_properties.ptx.bin_spice_models = True
 cell_properties.ptx.model_is_subckt = True
 
+cell_properties.dff.port_order = ['D', 'Q', 'clk', 'vdd', 'gnd']
+cell_properties.dff.port_map = {'D': 'D',
+                                'Q': 'Q',
+                                'clk': 'CLK',
+                                'vdd': 'VDD',
+                                'gnd': 'GND'}
+
+# You can override the GDS for custom cell using the following:
+# If it is a list, the first is single port and the second is dual port.
+# If it is string, it is used for both single and dual port.
+cell_properties.names["dff"] = "sky130_fd_bd_sram__openram_dff"
+
 ###################################################
 # Custom layer properties
 ###################################################
