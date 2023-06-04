@@ -1087,6 +1087,10 @@ class layout():
         if not height:
             height = drc["minwidth_{0}".format(layer)]
 
+        while width*height < drc["minarea_{0}".format(layer)]:
+            width += 0.01
+            height += 0.01
+
         ll_offset = offset - vector(0.5 * width, 0.5 * height)
 
         return self.add_layout_pin(text, layer, ll_offset, width, height)

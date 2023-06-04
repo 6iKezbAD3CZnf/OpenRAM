@@ -176,6 +176,12 @@ class column_mux(pgate):
         self.add_via_stack_center(from_layer=nmos_lower_d_pin.layer,
                                   to_layer=self.col_mux_stack[2],
                                   offset=nmos_lower_d_pin.center())
+        self.add_via_stack_center(from_layer="m1",
+                                  to_layer="m2",
+                                  offset=br_pin.bc())
+        self.add_via_stack_center(from_layer="m1",
+                                  to_layer="m2",
+                                  offset=bl_out_pin.uc())
 
         # bl -> nmos_upper/D on metal1
         # bl_out -> nmos_upper/S on metal2
@@ -236,7 +242,7 @@ class column_mux(pgate):
                             implant_type="p",
                             well_type="p")
 
-        # If there is a li layer, include it in the power stack
+        # if there is a li layer, include it in the power stack
         self.add_via_center(layers=self.col_mux_stack,
                             offset=active_pos)
 

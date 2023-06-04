@@ -95,6 +95,12 @@ preferred_directions = {"poly": "V",
 ###################################################
 # GDS Layer Map
 ###################################################
+# Use M3/M4
+power_grid = m3_stack
+
+###################################################
+# GDS Layer Map
+###################################################
 
 
 layer = {}
@@ -403,9 +409,10 @@ drc.add_enclosure("m4",
                   layer="via3",
                   enclosure=0.065)
 # FIXME: Wrong rule m4.3 Minimum enclosure around via3
+# This seems to be via4.4 rule
 drc.add_enclosure("m4",
                   layer="via4",
-                  enclosure=0.060)
+                  enclosure=0.190) # Changed from 0.060
 
 
 # via4.1 Minimum width of Via4
@@ -509,6 +516,10 @@ else:
     drc_name = "magic"
     lvs_name = "netgen"
     pex_name = "magic"
+
+#  drc_name = "klayout"
+#  lvs_name = "klayout"
+#  pex_name = "klayout"
 
 blackbox_bitcell = False
 
