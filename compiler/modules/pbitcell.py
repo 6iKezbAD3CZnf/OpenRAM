@@ -837,10 +837,9 @@ class pbitcell(bitcell_base):
             # first transistor on either side of the cross coupled inverters
             # does not need to route to wordline on metal2
             if (k == 0) or (k == 1):
-                self.add_via_center(layers=self.poly_stack,
-                                    offset=port_contact_offset)
-                self.add_via_center(layers=self.li_stack,
-                                    offset=port_contact_offset)
+                self.add_via_stack_center(offset=port_contact_offset,
+                                          from_layer="poly",
+                                          to_layer="m1")
 
 
                 self.add_path("poly", [gate_offset, port_contact_offset])
@@ -848,13 +847,9 @@ class pbitcell(bitcell_base):
                               [port_contact_offset, wl_contact_offset])
 
             else:
-                self.add_via_center(layers=self.poly_stack,
-                                    offset=port_contact_offset)
-                self.add_via_center(layers=self.li_stack,
-                                    offset=port_contact_offset)
-
-                self.add_via_center(layers=self.m1_stack,
-                                    offset=wl_contact_offset)
+                self.add_via_stack_center(offset=port_contact_offset,
+                                          from_layer="poly",
+                                          to_layer="m2")
 
                 self.add_path("poly", [gate_offset, port_contact_offset])
                 self.add_path("m2",
@@ -892,12 +887,10 @@ class pbitcell(bitcell_base):
 
             # Leave bitline disconnected if a dummy cell
             if not self.dummy_bitcell:
-                self.add_via_center(layers=self.li_stack,
-                                    offset=port_contact_offest,
-                                    directions="nonpref")
-                self.add_via_center(layers=self.m1_stack,
-                                    offset=port_contact_offest,
-                                    directions="nonpref")
+                self.add_via_stack_center(offset=port_contact_offest,
+                                          from_layer=self.inverter_nmos.route_layer,
+                                          to_layer="m2",
+                                          directions="nonpref")
 
             self.add_path("m2",
                           [port_contact_offest, bl_offset], width=self.m1_via.height)
@@ -908,12 +901,10 @@ class pbitcell(bitcell_base):
 
             # Leave bitline disconnected if a dummy cell
             if not self.dummy_bitcell:
-                self.add_via_center(layers=self.li_stack,
-                                    offset=port_contact_offest,
-                                    directions="nonpref")
-                self.add_via_center(layers=self.m1_stack,
-                                    offset=port_contact_offest,
-                                    directions="nonpref")
+                self.add_via_stack_center(offset=port_contact_offest,
+                                          from_layer=self.inverter_nmos.route_layer,
+                                          to_layer="m2",
+                                          directions="nonpref")
 
             self.add_path("m2",
                           [port_contact_offest, br_offset], width=self.m1_via.height)
@@ -929,12 +920,10 @@ class pbitcell(bitcell_base):
             nmos_contact_positions.append(self.read_access_nmos_right[k].get_pin("S").center())
 
         for position in nmos_contact_positions:
-            self.add_via_center(layers=self.li_stack,
-                                offset=position,
-                                directions=("V", "V"))
-            self.add_via_center(layers=self.m1_stack,
-                                offset=position,
-                                directions=("V", "V"))
+            self.add_via_stack_center(offset=position,
+                                      from_layer=self.inverter_nmos.route_layer,
+                                      to_layer="m2",
+                                      directions=("V", "V"))
 
 
             if position.x > 0:
@@ -943,12 +932,10 @@ class pbitcell(bitcell_base):
                 contact_correct = -0.5 * self.m1_via.height
             supply_offset = vector(position.x + contact_correct,
                                    self.gnd_position.y)
-            self.add_via_center(layers=self.li_stack,
-                                offset=supply_offset,
-                                directions=("H", "H"))
-            self.add_via_center(layers=self.m1_stack,
-                                offset=supply_offset,
-                                directions=("H", "H"))
+            self.add_via_stack_center(offset=supply_offset,
+                                      from_layer=self.inverter_nmos.route_layer,
+                                      to_layer="m2",
+                                      directions=("H", "H"))
 
             self.add_path("m2", [position, supply_offset])
 
@@ -957,9 +944,10 @@ class pbitcell(bitcell_base):
         pmos_contact_positions.append(self.inverter_pmos_left.get_pin("S").uc())
         pmos_contact_positions.append(self.inverter_pmos_right.get_pin("D").uc())
         for position in pmos_contact_positions:
-            self.add_via_center(layers=self.li_stack,
-                                offset=position,
-                                directions=("V", "V"))
+            self.add_via_stack_center(offset=position,
+                                      from_layer=self.inverter_nmos.route_layer,
+                                      to_layer="m1",
+                                      directions=("V", "V"))
 
         vdd_pos_left = vector(self.inverter_nmos_left.get_pin("S").uc().x,
                               self.vdd_position.y)
@@ -1116,25 +1104,37 @@ class pbitcell(bitcell_base):
         # add well contacts
         # connect pimplants to gnd
         offset = vector(0, self.gnd_position.y)
-        self.add_via_center(layers=self.active_stack,
-                            offset=offset,
-                            directions=("H", "H"),
-                            implant_type="p",
-                            well_type="p")
-        self.add_via_center(layers=self.li_stack,
-                            offset=offset,
-                            directions=("H", "H"))
+        #  self.add_via_center(layers=self.active_stack,
+        #                      offset=offset,
+        #                      directions=("H", "H"),
+        #                      implant_type="p",
+        #                      well_type="p")
+        #  self.add_via_center(layers=self.li_stack,
+        #                      offset=offset,
+        #                      directions=("H", "H"))
+        self.add_via_stack_center(offset=offset,
+                                  from_layer="active",
+                                  to_layer="m1",
+                                  directions=("H", "H"),
+                                  implant_type="p",
+                                  well_type="p")
 
         # connect nimplants to vdd
         offset = vector(0, self.vdd_position.y)
-        self.add_via_center(layers=self.active_stack,
-                            offset=offset,
-                            directions=("H", "H"),
-                            implant_type="n",
-                            well_type="n")
-        self.add_via_center(layers=self.li_stack,
-                            offset=offset,
-                            directions=("H", "H"))
+        #  self.add_via_center(layers=self.active_stack,
+        #                      offset=offset,
+        #                      directions=("H", "H"),
+        #                      implant_type="n",
+        #                      well_type="n")
+        #  self.add_via_center(layers=self.li_stack,
+        #                      offset=offset,
+        #                      directions=("H", "H"))
+        self.add_via_stack_center(offset=offset,
+                                  from_layer="active",
+                                  to_layer="m1",
+                                  directions=("H", "H"),
+                                  implant_type="n",
+                                  well_type="n")
 
     def get_bitcell_pins(self, col, row):
         """
