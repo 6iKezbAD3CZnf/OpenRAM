@@ -536,7 +536,7 @@ else:
 blackbox_bitcell = False
 
 # This is used by uniqify to not rename the library cells
-#  library_prefix_name = "sky130_fd_bd_sram__"
+library_prefix_name = "sky130_fd_bd_sram__"
 # List of cells to skip running DRC/LVS on directly
 # This will look for a maglef file and copy it over the mag file
 # before DRC after extraction

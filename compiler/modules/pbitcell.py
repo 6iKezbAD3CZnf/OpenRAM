@@ -239,7 +239,8 @@ class pbitcell(bitcell_base):
         self.write_port_spacing = max(self.active_space,
                                       self.m1_space,
                                       m2_constraint)
-        self.read_port_spacing = self.bitline_offset + self.m2_space
+        self.read_port_spacing = max(self.bitline_offset + self.m2_space,
+                                     self.active_space) # Changed
 
         # spacing between cross coupled inverters
         self.inverter_to_inverter_spacing = self.poly_contact.width + self.m1_space
@@ -256,14 +257,18 @@ class pbitcell(bitcell_base):
         self.cross_couple_lower_ypos = self.inverter_nmos_ypos \
                                        + self.inverter_nmos.active_height \
                                        + max(self.poly_to_active,
-                                             self.m1_space + inverter_nmos_contact_extension) \
+                                             self.m1_space + inverter_nmos_contact_extension,
+                                             self.contact_width + drc["poly_contact_to_gate"] - self.poly_contact.width) \
                                        + 0.5 * self.poly_contact.width
-        self.cross_couple_upper_ypos = self.inverter_nmos_ypos \
-                                       + self.inverter_nmos.active_height \
-                                       + max(self.poly_to_active,
-                                             self.m1_space + inverter_nmos_contact_extension) \
+        self.cross_couple_upper_ypos = self.cross_couple_lower_ypos \
                                        + self.poly_to_contact \
-                                       + 1.5 * self.poly_contact.width
+                                       + self.poly_contact.width
+
+        # y-position of inverter pmos
+        self.inverter_pmos_ypos = max(self.inverter_nmos_ypos \
+                                      + self.inverter_nmos.active_height \
+                                      + self.inverter_gap,
+                                      self.cross_couple_upper_ypos + self.poly_contact.width + 0.235)
 
         # spacing between wordlines (and gnd)
         self.m1_offset = -0.5 * self.m1_width
@@ -285,9 +290,7 @@ class pbitcell(bitcell_base):
         and dimensions of the cell
         """
         self.botmost_ypos = self.m1_offset - self.total_ports * self.m1_nonpref_pitch
-        self.topmost_ypos = self.inverter_nmos_ypos \
-                            + self.inverter_nmos.active_height \
-                            + self.inverter_gap \
+        self.topmost_ypos = self.inverter_pmos_ypos \
                             + self.inverter_pmos.active_height \
                             + self.vdd_offset
 
@@ -339,9 +342,6 @@ class pbitcell(bitcell_base):
         left_inverter_xpos = -0.5 * self.inverter_to_inverter_spacing \
                              - self.inverter_nmos.active_width
         right_inverter_xpos = 0.5 * self.inverter_to_inverter_spacing
-        inverter_pmos_ypos = self.inverter_nmos_ypos \
-                             + self.inverter_nmos.active_height \
-                             + self.inverter_gap
 
         # create active for nmos
         self.inverter_nmos_left.place([left_inverter_xpos,
@@ -351,9 +351,9 @@ class pbitcell(bitcell_base):
 
         # create active for pmos
         self.inverter_pmos_left.place([left_inverter_xpos,
-                                       inverter_pmos_ypos])
+                                       self.inverter_pmos_ypos])
         self.inverter_pmos_right.place([right_inverter_xpos,
-                                        inverter_pmos_ypos])
+                                        self.inverter_pmos_ypos])
 
         # update furthest left and right transistor edges
         # (this will propagate to further transistor offset calculations)
@@ -432,9 +432,7 @@ class pbitcell(bitcell_base):
                                        offset=self.gnd_position,
                                        width=self.width)
 
-        vdd_ypos = self.inverter_nmos_ypos \
-                   + self.inverter_nmos.active_height \
-                   + self.inverter_gap \
+        vdd_ypos = self.inverter_pmos_ypos \
                    + self.inverter_pmos.active_height \
                    + self.vdd_offset
         self.vdd_position = vector(0, vdd_ypos)
@@ -851,6 +849,9 @@ class pbitcell(bitcell_base):
                                           from_layer="poly",
                                           to_layer="m2")
 
+                self.add_via_center(layers=self.m1_stack,
+                                    offset=wl_contact_offset)
+
                 self.add_path("poly", [gate_offset, port_contact_offset])
                 self.add_path("m2",
                               [port_contact_offset, wl_contact_offset])
@@ -989,14 +990,14 @@ class pbitcell(bitcell_base):
                          self.cross_couple_lower_ypos)
             Q_pos = vector(self.inverter_nmos_left.get_pin("D").lx(),
                            self.cross_couple_lower_ypos)
-            self.add_path("m1",
+            self.add_path(self.inverter_nmos.route_layer,
                           [self.write_nmos_left[k].get_pin("D").uc(), mid, Q_pos])
 
             mid = vector(self.write_nmos_right[k].get_pin("S").uc().x,
                          self.cross_couple_lower_ypos)
             Q_bar_pos = vector(self.inverter_nmos_right.get_pin("S").rx(),
                                self.cross_couple_lower_ypos)
-            self.add_path("m1",
+            self.add_path(self.inverter_nmos.route_layer,
                           [self.write_nmos_right[k].get_pin("S").uc(), mid, Q_bar_pos])
 
     def route_read_access(self):
@@ -1041,7 +1042,7 @@ class pbitcell(bitcell_base):
 
             mid = vector(self.read_access_nmos_left[k].get_pin("G").uc().x,
                          self.cross_couple_upper_ypos)
-            self.add_path("m1",
+            self.add_path(self.inverter_nmos.route_layer,
                           [port_contact_offset, mid, left_storage_contact])
 
             port_contact_offset = self.read_access_nmos_right[k].get_pin("G").uc() \
@@ -1056,7 +1057,7 @@ class pbitcell(bitcell_base):
 
             mid = vector(self.read_access_nmos_right[k].get_pin("G").uc().x,
                          self.cross_couple_upper_ypos)
-            self.add_path("m1",
+            self.add_path(self.inverter_nmos.route_layer,
                           [port_contact_offset, mid, right_storage_contact])
 
     def extend_well(self):
@@ -1179,7 +1180,7 @@ class pbitcell(bitcell_base):
         """
         Q_bar_pos = self.inverter_pmos_right.get_pin("S").center()
         vdd_pos = self.inverter_pmos_right.get_pin("D").center()
-        self.add_path("m1", [Q_bar_pos, vdd_pos])
+        self.add_path(self.inverter_nmos.route_layer, [Q_bar_pos, vdd_pos])
 
     def get_storage_net_names(self):
         """
