@@ -41,6 +41,7 @@ class wordline_driver(design):
         self.create_insts()
 
     def create_modules(self):
+        debug.info(1, "self.height = {}".format(self.height))
         self.nand = factory.create(module_type="nand2_dec",
                                    height=self.height)
 
@@ -58,6 +59,8 @@ class wordline_driver(design):
                                          size=driver_size,
                                          height=self.nand.height)
         else:
+            debug.info(1, "driver_size = {}".format(driver_size))
+            debug.info(1, "self.nand.height = {}".format(self.nand.height))
             self.driver = factory.create(module_type="inv_dec",
                                          size=driver_size,
                                          height=self.nand.height)
@@ -122,7 +125,7 @@ class wordline_driver(design):
         # nand Z to inv A
         z1_pin = self.nand_inst.get_pin("Z")
         a2_pin = self.driver_inst.get_pin("A")
-        if OPTS.tech_name == "sky130":
+        if OPTS.tech_name == "sky130" or OPTS.tech_name == "user_design_sky130":
             mid1_point = vector(a2_pin.cx(), z1_pin.cy())
         else:
             mid1_point = vector(z1_pin.cx(), a2_pin.cy())

@@ -33,7 +33,7 @@ class pinv_dec(pinv):
 
         # Inputs to cells are on input layer
         # Outputs from cells are on output layer
-        if OPTS.tech_name == "sky130":
+        if OPTS.tech_name == "sky130" or OPTS.tech_name == "user_design_sky130":
             self.supply_layer = "m1"
         else:
             self.supply_layer = "m2"
@@ -128,7 +128,7 @@ class pinv_dec(pinv):
         # center the transistors in the y-dimension (it is rotated, so use the width)
         y_offset = 0.5 * (self.height - self.nmos.width) + self.nmos.width
 
-        if OPTS.tech_name == "sky130":
+        if OPTS.tech_name == "sky130" or OPTS.tech_name == "user_design_sky130":
             # make room for well contacts between cells
             y_offset = (0.5 * (self.height - self.nmos.width) + self.nmos.width) * 0.9
 

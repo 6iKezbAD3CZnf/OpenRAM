@@ -18,6 +18,15 @@ File containing the process technology parameters for Skywater 130nm.
 # For example: tech_modules["contact"] = "contact_freepdk45"
 tech_modules = d.module_type()
 
+tech_modules["nand2_dec"] = "nand2_dec"
+tech_modules["nand3_dec"] = "nand3_dec"
+tech_modules["nand4_dec"] = "nand4_dec"
+
+tech_modules["inv_dec"] = "pinv_dec"
+tech_modules["and2_dec"] = "and2_dec"
+tech_modules["and3_dec"] = "and3_dec"
+tech_modules["and4_dec"] = "and4_dec"
+
 ###################################################
 # Custom cell properties
 ###################################################
@@ -33,15 +42,44 @@ cell_properties.dff.port_map = {'D': 'D',
                                 'vdd': 'VDD',
                                 'gnd': 'GND'}
 
+cell_properties.nand2_dec.port_order = ['A', 'B', 'Z', 'vdd', 'gnd']
+cell_properties.nand2_dec.port_map = {'A': 'A',
+                                      'B': 'B',
+                                      'Z': 'Z',
+                                      'vdd': 'VDD',
+                                      'gnd': 'GND'}
+
+cell_properties.nand3_dec.port_order = ['A', 'B', 'C', 'Z', 'vdd', 'gnd']
+cell_properties.nand3_dec.port_map = {'A': 'A',
+                                      'B': 'B',
+                                      'C': 'C',
+                                      'Z': 'Z',
+                                      'vdd': 'VDD',
+                                      'gnd': 'GND'}
+
+cell_properties.nand4_dec.port_order = ['A', 'B', 'C', 'D', 'Z', 'vdd', 'gnd']
+cell_properties.nand4_dec.port_map = {'A': 'A',
+                                      'B': 'B',
+                                      'C': 'C',
+                                      'D': 'D',
+                                      'Z': 'Z',
+                                      'vdd': 'VDD',
+                                      'gnd': 'GND'}
+
 # You can override the GDS for custom cell using the following:
 # If it is a list, the first is single port and the second is dual port.
 # If it is string, it is used for both single and dual port.
 cell_properties.names["dff"] = "sky130_fd_bd_sram__openram_dff"
+cell_properties.names["nand2_dec"] = ["sky130_fd_bd_sram__openram_sp_nand2_dec", "sky130_fd_bd_sram__openram_dp_nand2_dec"]
+cell_properties.names["nand3_dec"] = ["sky130_fd_bd_sram__openram_sp_nand3_dec", "sky130_fd_bd_sram__openram_dp_nand3_dec"]
+cell_properties.names["nand4_dec"] = ["sky130_fd_bd_sram__openram_sp_nand4_dec", "sky130_fd_bd_sram__openram_dp_nand4_dec"]
 
 ###################################################
 # Custom layer properties
 ###################################################
 layer_properties = d.layer_properties()
+
+layer_properties.wordline_driver.vertical_supply = True
 
 ###################################################
 # GDS file info
@@ -549,18 +587,18 @@ library_prefix_name = "sky130_fd_bd_sram__"
 # gds flatglob sky130_fd_bd_sram__openram_sp_cell_opt1a_cell
 # gds flatglob sky130_fd_bd_sram__sram_sp_cell_fom_serifs
 
-#  flatglob = ["*_?mos_m*",
-#              "sky130_fd_bd_sram__sram_sp_cell_fom_serifs",
+flatglob = ["*_?mos_m*",
+            "sky130_fd_bd_sram__sram_sp_cell_fom_serifs",
 
-#              "sky130_fd_bd_sram__sram_sp_cell",
-#              "sky130_fd_bd_sram__openram_sp_cell_opt1_replica_cell",
-#              "sky130_fd_bd_sram__openram_sp_cell_opt1a_replica_cell",
+            "sky130_fd_bd_sram__sram_sp_cell",
+            "sky130_fd_bd_sram__openram_sp_cell_opt1_replica_cell",
+            "sky130_fd_bd_sram__openram_sp_cell_opt1a_replica_cell",
 
-#              "sky130_fd_bd_sram__sram_sp_cell_opt1_ce",
-#              "sky130_fd_bd_sram__openram_sp_cell_opt1_replica_ce",
-#              "sky130_fd_bd_sram__openram_sp_cell_opt1a_replica_ce",
-#              "sky130_fd_bd_sram__sram_sp_wlstrap_ce",
-#              "sky130_fd_bd_sram__sram_sp_wlstrap_p_ce"]
+            "sky130_fd_bd_sram__sram_sp_cell_opt1_ce",
+            "sky130_fd_bd_sram__openram_sp_cell_opt1_replica_ce",
+            "sky130_fd_bd_sram__openram_sp_cell_opt1a_replica_ce",
+            "sky130_fd_bd_sram__sram_sp_wlstrap_ce",
+            "sky130_fd_bd_sram__sram_sp_wlstrap_p_ce"]
 
 #  blackbox_cells = ["sky130_fd_bd_sram__openram_dp_cell",
 #                    "sky130_fd_bd_sram__openram_dp_cell_dummy",
