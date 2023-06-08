@@ -1084,15 +1084,19 @@ class pbitcell(bitcell_base):
         # extend nwell to encompass inverter_pmos
         # calculate offset of the left pmos well
         if "nwell" in layer:
-            inverter_well_xpos = -(self.inverter_nmos.active_width + 0.5 * self.inverter_to_inverter_spacing) \
-                                 - self.nwell_enclose_active
+            #  inverter_well_xpos = -(self.inverter_nmos.active_width + 0.5 * self.inverter_to_inverter_spacing) \
+            #                       - self.nwell_enclose_active
+            inverter_well_xpos = -(self.inverter_pmos.active_width + 0.5 * self.inverter_to_inverter_spacing) \
+                                 - 0.6 * (self.inverter_pmos.well_width - self.inverter_pmos.active_width) # 0.6 instead of 0.5 for robustness
             inverter_well_ypos = self.inverter_nmos_ypos + self.inverter_nmos.active_height \
                                  + self.inverter_gap - self.nwell_enclose_active
 
             # calculate width of the two combined nwells
             # calculate height to encompass nimplant connected to vdd
+            #  well_width = 2 * (self.inverter_nmos.active_width + 0.5 * self.inverter_to_inverter_spacing) \
+            #               + 2 * self.nwell_enclose_active
             well_width = 2 * (self.inverter_nmos.active_width + 0.5 * self.inverter_to_inverter_spacing) \
-                         + 2 * self.nwell_enclose_active
+                         + 1.2 * (self.inverter_pmos.well_width - self.inverter_pmos.active_width)
             well_height = self.vdd_position.y - inverter_well_ypos \
                           + self.nwell_enclose_active + drc["minwidth_tx"]
 
