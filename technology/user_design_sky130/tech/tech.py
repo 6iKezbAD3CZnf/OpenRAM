@@ -66,6 +66,14 @@ cell_properties.nand4_dec.port_map = {'A': 'A',
                                       'vdd': 'VDD',
                                       'gnd': 'GND'}
 
+cell_properties.sense_amp.port_order = ['bl', 'br', 'dout', 'en', 'vdd', 'gnd']
+cell_properties.sense_amp.port_map = {'bl': 'BL',
+                                      'br': 'BR',
+                                      'dout': 'DOUT',
+                                      'en': 'EN',
+                                      'vdd': 'VDD',
+                                      'gnd': 'GND'}
+
 # You can override the GDS for custom cell using the following:
 # If it is a list, the first is single port and the second is dual port.
 # If it is string, it is used for both single and dual port.
@@ -73,6 +81,8 @@ cell_properties.names["dff"] = "sky130_fd_bd_sram__openram_dff"
 cell_properties.names["nand2_dec"] = ["sky130_fd_bd_sram__openram_sp_nand2_dec", "sky130_fd_bd_sram__openram_dp_nand2_dec"]
 cell_properties.names["nand3_dec"] = ["sky130_fd_bd_sram__openram_sp_nand3_dec", "sky130_fd_bd_sram__openram_dp_nand3_dec"]
 cell_properties.names["nand4_dec"] = ["sky130_fd_bd_sram__openram_sp_nand4_dec", "sky130_fd_bd_sram__openram_dp_nand4_dec"]
+
+cell_properties.names["sense_amp"] = "sky130_fd_bd_sram__openram_sense_amp"
 
 ###################################################
 # Custom layer properties
