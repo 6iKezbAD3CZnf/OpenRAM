@@ -38,7 +38,7 @@ class sense_amp_array(design):
         self.column_offset = column_offset
         self.row_size = self.word_size * self.words_per_row
 
-        if OPTS.tech_name == "sky130":
+        if OPTS.tech_name == "sky130" or OPTS.tech_name == "user_design_sky130":
             self.en_layer = "m3"
         else:
             self.en_layer = "m1"

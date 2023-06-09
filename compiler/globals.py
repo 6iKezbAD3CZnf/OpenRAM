@@ -227,6 +227,7 @@ def setup_bitcell():
     # and the user didn't over-ride the bitcell manually,
     # figure out the right bitcell to use
     if OPTS.bitcell == "pbitcell":
+        OPTS.num_ports = OPTS.num_rw_ports + OPTS.num_w_ports + OPTS.num_r_ports
         OPTS.bitcell = "pbitcell"
         OPTS.dummy_bitcell = "dummy_pbitcell"
         OPTS.replica_bitcell = "replica_pbitcell"
