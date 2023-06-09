@@ -74,6 +74,14 @@ cell_properties.sense_amp.port_map = {'bl': 'BL',
                                       'vdd': 'VDD',
                                       'gnd': 'GND'}
 
+cell_properties.write_driver.port_order = ['din', 'bl', 'br', 'en', 'vdd', 'gnd']
+cell_properties.write_driver.port_map = {'din': 'DIN',
+                                         'bl': 'BL',
+                                         'br': 'BR',
+                                         'en': 'EN',
+                                         'vdd': 'VDD',
+                                         'gnd': 'GND'}
+
 # You can override the GDS for custom cell using the following:
 # If it is a list, the first is single port and the second is dual port.
 # If it is string, it is used for both single and dual port.
@@ -83,6 +91,7 @@ cell_properties.names["nand3_dec"] = ["sky130_fd_bd_sram__openram_sp_nand3_dec",
 cell_properties.names["nand4_dec"] = ["sky130_fd_bd_sram__openram_sp_nand4_dec", "sky130_fd_bd_sram__openram_dp_nand4_dec"]
 
 cell_properties.names["sense_amp"] = "sky130_fd_bd_sram__openram_sense_amp"
+cell_properties.names["write_driver"] = "sky130_fd_bd_sram__openram_write_driver"
 
 ###################################################
 # Custom layer properties

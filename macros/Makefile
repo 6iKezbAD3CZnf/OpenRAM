@@ -2,6 +2,8 @@ MACRO_DIR := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
 TOP_DIR := $(realpath $(MACRO_DIR)/..)
 include $(TOP_DIR)/openram.mk
 
+export OPENRAM_TMP=$(MACRO_DIR)/results/$*/tmp
+
 .DEFAULT_GOAL := all
 
 SKY130_PDK ?= $(PDK_ROOT)/sky130A
@@ -78,8 +80,8 @@ sram: $(WORKING_SRAM_STAMPS)
 	
 %.ok: sram_configs/%.py
 	@echo "Building $*"
-	@mkdir -p $*
-	@python3 -u $(SRAM_COMPILER) $(OPENRAM_OPTS) -o $* -p $(MACRO_DIR)/$* $(MACRO_DIR)/$< && touch $@
+	@mkdir -p results/$*
+	@python3 -u $(SRAM_COMPILER) $(OPENRAM_OPTS) -o $* -p $(MACRO_DIR)/results/$* $(MACRO_DIR)/$< && touch results/$@
 
 %.ok: rom_configs/%.py
 	@echo "Building $*"

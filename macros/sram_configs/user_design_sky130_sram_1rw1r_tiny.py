@@ -9,12 +9,9 @@ write_size = 2 # Bits
 
 # Dual port
 num_rw_ports = 1
-num_r_ports = 0
+num_r_ports = 1
 num_w_ports = 0
-ports_human = '1rw'
-
-num_spare_cols = 1
-num_spare_rows = 1
+ports_human = '1rw1r'
 
 import os
 exec(open(os.path.join(os.path.dirname(__file__), 'user_design_sky130_sram_common.py')).read())
