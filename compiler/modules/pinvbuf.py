@@ -98,7 +98,7 @@ class pinvbuf(pgate):
         self.inv1_inst.place(vector(0, 0))
 
         # Add INV2 to the right of INV1
-        self.inv2_inst.place(vector(self.inv1_inst.rx(), 0))
+        self.inv2_inst.place(vector(self.inv1_inst.rx() + 0.2, 0))
 
         # Add INV3 to the right of INV2
         self.inv3_inst.place(vector(self.inv2_inst.rx(), 0))
