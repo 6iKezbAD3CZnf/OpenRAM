@@ -18,14 +18,14 @@ File containing the process technology parameters for Skywater 130nm.
 # For example: tech_modules["contact"] = "contact_freepdk45"
 tech_modules = d.module_type()
 
-tech_modules["nand2_dec"] = "nand2_dec"
-tech_modules["nand3_dec"] = "nand3_dec"
-tech_modules["nand4_dec"] = "nand4_dec"
+#  tech_modules["nand2_dec"] = "nand2_dec"
+#  tech_modules["nand3_dec"] = "nand3_dec"
+#  tech_modules["nand4_dec"] = "nand4_dec"
 
-tech_modules["inv_dec"] = "pinv_dec"
-tech_modules["and2_dec"] = "and2_dec"
-tech_modules["and3_dec"] = "and3_dec"
-tech_modules["and4_dec"] = "and4_dec"
+#  tech_modules["inv_dec"] = "pinv_dec"
+#  tech_modules["and2_dec"] = "and2_dec"
+#  tech_modules["and3_dec"] = "and3_dec"
+#  tech_modules["and4_dec"] = "and4_dec"
 
 ###################################################
 # Custom cell properties
@@ -42,29 +42,29 @@ cell_properties.dff.port_map = {'D': 'D',
                                 'vdd': 'VDD',
                                 'gnd': 'GND'}
 
-cell_properties.nand2_dec.port_order = ['A', 'B', 'Z', 'vdd', 'gnd']
-cell_properties.nand2_dec.port_map = {'A': 'A',
-                                      'B': 'B',
-                                      'Z': 'Z',
-                                      'vdd': 'VDD',
-                                      'gnd': 'GND'}
+#  cell_properties.nand2_dec.port_order = ['A', 'B', 'Z', 'vdd', 'gnd']
+#  cell_properties.nand2_dec.port_map = {'A': 'A',
+#                                        'B': 'B',
+#                                        'Z': 'Z',
+#                                        'vdd': 'VDD',
+#                                        'gnd': 'GND'}
 
-cell_properties.nand3_dec.port_order = ['A', 'B', 'C', 'Z', 'vdd', 'gnd']
-cell_properties.nand3_dec.port_map = {'A': 'A',
-                                      'B': 'B',
-                                      'C': 'C',
-                                      'Z': 'Z',
-                                      'vdd': 'VDD',
-                                      'gnd': 'GND'}
+#  cell_properties.nand3_dec.port_order = ['A', 'B', 'C', 'Z', 'vdd', 'gnd']
+#  cell_properties.nand3_dec.port_map = {'A': 'A',
+#                                        'B': 'B',
+#                                        'C': 'C',
+#                                        'Z': 'Z',
+#                                        'vdd': 'VDD',
+#                                        'gnd': 'GND'}
 
-cell_properties.nand4_dec.port_order = ['A', 'B', 'C', 'D', 'Z', 'vdd', 'gnd']
-cell_properties.nand4_dec.port_map = {'A': 'A',
-                                      'B': 'B',
-                                      'C': 'C',
-                                      'D': 'D',
-                                      'Z': 'Z',
-                                      'vdd': 'VDD',
-                                      'gnd': 'GND'}
+#  cell_properties.nand4_dec.port_order = ['A', 'B', 'C', 'D', 'Z', 'vdd', 'gnd']
+#  cell_properties.nand4_dec.port_map = {'A': 'A',
+#                                        'B': 'B',
+#                                        'C': 'C',
+#                                        'D': 'D',
+#                                        'Z': 'Z',
+#                                        'vdd': 'VDD',
+#                                        'gnd': 'GND'}
 
 cell_properties.sense_amp.port_order = ['bl', 'br', 'dout', 'en', 'vdd', 'gnd']
 cell_properties.sense_amp.port_map = {'bl': 'BL',
@@ -86,9 +86,9 @@ cell_properties.write_driver.port_map = {'din': 'DIN',
 # If it is a list, the first is single port and the second is dual port.
 # If it is string, it is used for both single and dual port.
 cell_properties.names["dff"] = "sky130_fd_bd_sram__openram_dff"
-cell_properties.names["nand2_dec"] = ["sky130_fd_bd_sram__openram_sp_nand2_dec", "sky130_fd_bd_sram__openram_dp_nand2_dec"]
-cell_properties.names["nand3_dec"] = ["sky130_fd_bd_sram__openram_sp_nand3_dec", "sky130_fd_bd_sram__openram_dp_nand3_dec"]
-cell_properties.names["nand4_dec"] = ["sky130_fd_bd_sram__openram_sp_nand4_dec", "sky130_fd_bd_sram__openram_dp_nand4_dec"]
+#  cell_properties.names["nand2_dec"] = ["sky130_fd_bd_sram__openram_sp_nand2_dec", "sky130_fd_bd_sram__openram_dp_nand2_dec"]
+#  cell_properties.names["nand3_dec"] = ["sky130_fd_bd_sram__openram_sp_nand3_dec", "sky130_fd_bd_sram__openram_dp_nand3_dec"]
+#  cell_properties.names["nand4_dec"] = ["sky130_fd_bd_sram__openram_sp_nand4_dec", "sky130_fd_bd_sram__openram_dp_nand4_dec"]
 
 cell_properties.names["sense_amp"] = "sky130_fd_bd_sram__openram_sense_amp"
 cell_properties.names["write_driver"] = "sky130_fd_bd_sram__openram_write_driver"
@@ -97,8 +97,38 @@ cell_properties.names["write_driver"] = "sky130_fd_bd_sram__openram_write_driver
 # Custom layer properties
 ###################################################
 layer_properties = d.layer_properties()
+layer_properties.hierarchical_decoder.bus_layer = "m1"
+layer_properties.hierarchical_decoder.bus_directions = "nonpref"
+layer_properties.hierarchical_decoder.input_layer = "li"
+layer_properties.hierarchical_decoder.output_layer = "m2"
+layer_properties.hierarchical_decoder.vertical_supply = True
+
+layer_properties.hierarchical_predecode.bus_layer = "m1"
+layer_properties.hierarchical_predecode.bus_directions = "nonpref"
+# This is added to allow the column decoder connections on m2
+layer_properties.hierarchical_predecode.bus_pitch_factor = 1.2
+layer_properties.hierarchical_predecode.bus_space_factor = 1.5
+layer_properties.hierarchical_predecode.input_layer = "li"
+layer_properties.hierarchical_predecode.output_layer = "m2"
+#  layer_properties.hierarchical_predecode.vertical_supply = True
+layer_properties.hierarchical_predecode.force_horizontal_input_contact = True
+
+layer_properties.bank.stack = "m2_stack"
+layer_properties.bank.pitch = "m3_pitch"
+
+layer_properties.column_mux_array.select_layer = "m3"
+layer_properties.column_mux_array.bitline_layer = "m1"
+
+layer_properties.port_address.supply_offset = True
+
+layer_properties.port_data.enable_layer = "m1"
+layer_properties.port_data.channel_route_bitlines = False
+
+layer_properties.replica_column.even_rows = True
 
 layer_properties.wordline_driver.vertical_supply = True
+
+layer_properties.global_wordline_layer = "m5"
 
 ###################################################
 # GDS file info

@@ -190,7 +190,7 @@ class pnand2(pgate):
                                      "A",
                                      position="center")
 
-        self.inputB_yoffset = self.inputA_yoffset + 2 * self.m3_pitch
+        self.inputB_yoffset = self.inputA_yoffset + 1.2 * self.m3_pitch # Changed from twice. Is it ok?
         # # active contact metal to poly contact metal spacing
         # active_contact_to_poly_contact = self.output_yoffset - self.route_layer_space - 0.5 * self.poly_contact.second_layer_height
         # active_bottom = self.pmos1_inst.by()
