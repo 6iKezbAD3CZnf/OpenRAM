@@ -126,7 +126,7 @@ layer_properties.port_data.channel_route_bitlines = False
 
 layer_properties.replica_column.even_rows = True
 
-layer_properties.wordline_driver.vertical_supply = True
+#  layer_properties.wordline_driver.vertical_supply = True
 
 layer_properties.global_wordline_layer = "m5"
 
@@ -195,7 +195,7 @@ preferred_directions = {"poly": "V",
 # GDS Layer Map
 ###################################################
 # Use M3/M4
-power_grid = m3_stack
+power_grid = m2_stack
 
 ###################################################
 # GDS Layer Map
