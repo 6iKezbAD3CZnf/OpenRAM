@@ -80,7 +80,7 @@ class port_address(design):
             self.copy_layout_pin(self.rbl_driver_inst, "vdd")
         else:
             rbl_pos = self.rbl_driver_inst.get_pin("vdd").rc()
-            self.add_power_pin("vdd", rbl_pos)
+            self.add_power_pin("vdd", rbl_pos, start_layer=self.rbl_driver_inst.get_pin("vdd").layer)
             self.add_path("m4", [rbl_pos, self.wordline_driver_array_inst.get_pins("vdd")[0].rc()])
 
         self.copy_layout_pin(self.wordline_driver_array_inst, "vdd")

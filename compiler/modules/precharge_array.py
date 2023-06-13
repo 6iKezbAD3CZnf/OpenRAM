@@ -30,7 +30,7 @@ class precharge_array(design):
         self.bitcell_br = bitcell_br
         self.column_offset = column_offset
 
-        if OPTS.tech_name == "sky130":
+        if OPTS.tech_name == "sky130" or OPTS.tech_name == "user_design_sky130":
             self.en_bar_layer = "m3"
         else:
             self.en_bar_layer = "m1"
@@ -95,7 +95,7 @@ class precharge_array(design):
             self.copy_layout_pin(inst, "br", "br_{0}".format(i))
 
     def route_supplies(self):
-        self.route_horizontal_pins("vdd")
+        self.route_horizontal_pins("vdd", layer="m3")
 
     def create_insts(self):
         """Creates a precharge array by horizontally tiling the precharge cell"""

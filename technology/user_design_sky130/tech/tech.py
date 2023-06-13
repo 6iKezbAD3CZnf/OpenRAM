@@ -113,22 +113,22 @@ layer_properties.hierarchical_predecode.output_layer = "m2"
 #  layer_properties.hierarchical_predecode.vertical_supply = True
 layer_properties.hierarchical_predecode.force_horizontal_input_contact = True
 
-layer_properties.bank.stack = "m2_stack"
-layer_properties.bank.pitch = "m3_pitch"
+#  layer_properties.bank.stack = "m2_stack"
+#  layer_properties.bank.pitch = "m3_pitch"
 
-layer_properties.column_mux_array.select_layer = "m3"
-layer_properties.column_mux_array.bitline_layer = "m1"
+#  #  layer_properties.column_mux_array.select_layer = "m3"
+#  #  layer_properties.column_mux_array.bitline_layer = "m1"
 
-layer_properties.port_address.supply_offset = True
+#  layer_properties.port_address.supply_offset = True
 
-layer_properties.port_data.enable_layer = "m1"
-layer_properties.port_data.channel_route_bitlines = False
+#  layer_properties.port_data.enable_layer = "m1"
+#  layer_properties.port_data.channel_route_bitlines = False
 
-layer_properties.replica_column.even_rows = True
+#  layer_properties.replica_column.even_rows = True
 
-#  layer_properties.wordline_driver.vertical_supply = True
+#  #  layer_properties.wordline_driver.vertical_supply = True
 
-layer_properties.global_wordline_layer = "m5"
+#  layer_properties.global_wordline_layer = "m5"
 
 ###################################################
 # GDS file info
