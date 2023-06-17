@@ -121,8 +121,8 @@ layer_properties.hierarchical_predecode.force_horizontal_input_contact = True
 
 #  layer_properties.port_address.supply_offset = True
 
-#  layer_properties.port_data.enable_layer = "m1"
-#  layer_properties.port_data.channel_route_bitlines = False
+layer_properties.port_data.enable_layer = "m1"
+layer_properties.port_data.channel_route_bitlines = False
 
 #  layer_properties.replica_column.even_rows = True
 
