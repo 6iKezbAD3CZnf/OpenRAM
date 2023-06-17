@@ -195,7 +195,7 @@ preferred_directions = {"poly": "V",
 # GDS Layer Map
 ###################################################
 # Use M3/M4
-power_grid = m2_stack
+#  power_grid = m2_stack
 
 ###################################################
 # GDS Layer Map

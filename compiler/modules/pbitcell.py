@@ -508,7 +508,8 @@ class pbitcell(bitcell_base):
                                                        self.port_ypos])
 
             # add pin for RWWL
-            rwwl_ypos = self.m2_offset - k * self.m2_nonpref_pitch
+            #  rwwl_ypos = self.m2_offset - k * self.m2_nonpref_pitch
+            rwwl_ypos = self.m3_width # This is for capped_replica_bitcell_array
             self.rwwl_positions[k] = vector(0, rwwl_ypos)
             self.add_layout_pin_rect_center(text=self.rw_wl_names[k],
                                             layer="m2",
